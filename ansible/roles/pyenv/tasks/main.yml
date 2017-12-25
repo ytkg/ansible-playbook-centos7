@@ -1,0 +1,40 @@
+- name: check pyenv 
+  stat: path=~/.pyenv
+  register: is_pyenv
+  ignore_errors: yes
+  become: False
+
+- name: git clone pyenv
+  git: repo=https://github.com/yyuu/pyenv.git dest=/home/vagrant/.pyenv
+  when: not is_pyenv.stat.exists
+  become: no
+
+- name: check pyvirtual
+  stat: path=~/.pyenv/plugins/pyenv-virtualenv
+  register: is_virtualenv
+  ignore_errors: yes
+  become: False
+
+- name: git clone pyenv-virtual
+  git: repo=https://github.com/yyuu/pyenv-virtualenv.git dest=/home/vagrant/.pyenv/plugins/pyenv-virtualenv
+  when: not is_virtualenv.stat.exists
+  become: no
+
+- name: update pyenv
+  command: git pull --rebase chdir=/home/vagrant/.pyenv
+  become: no
+
+- name: update pyenv-virtualenv
+  command: git pull --rebase chdir=/home/vagrant/.pyenv/plugins/pyenv-virtualenv
+  become: no
+
+- name: check python installed
+  shell: /bin/bash -lc "pyenv versions | grep {{ python_version }}"
+  register: python_installed
+  ignore_errors: yes
+  become: no
+
+- name: install python
+  shell: /bin/bash -lc "pyenv install {{ python_version }} && pyenv rehash && pyenv global {{ python_version }}"
+  when: python_installed.rc != 0
+  become: no

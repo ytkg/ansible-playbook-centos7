@@ -1,0 +1,10 @@
+---
+- hosts: dev
+  become: true
+  roles: 
+    - common
+    - mysql
+    - rbenv  
+    - pyenv
+    - nodejs
+    - nginx

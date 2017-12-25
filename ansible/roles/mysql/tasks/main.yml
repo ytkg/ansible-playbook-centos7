@@ -1,0 +1,12 @@
+- name: install mysql repository
+  yum:
+    name: "http://dev.mysql.com/get/mysql57-community-release-el7-7.noarch.rpm"
+
+- name: install mysql
+  yum: name=mysql-community-server enablerepo=mysql57-community state=present
+
+- name: copy my.cnf
+  copy: src=my.cnf dest=/etc/my.cnf backup=yes
+
+- name: start mysql and enabled
+  service: name=mysqld state=started enabled=yes
