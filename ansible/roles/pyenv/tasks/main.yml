@@ -2,7 +2,7 @@
   stat: path=~/.pyenv
   register: is_pyenv
   ignore_errors: yes
-  become: False
+  become: no
 
 - name: git clone pyenv
   git: repo=https://github.com/yyuu/pyenv.git dest=/home/vagrant/.pyenv
@@ -13,7 +13,7 @@
   stat: path=~/.pyenv/plugins/pyenv-virtualenv
   register: is_virtualenv
   ignore_errors: yes
-  become: False
+  become: no
 
 - name: git clone pyenv-virtual
   git: repo=https://github.com/yyuu/pyenv-virtualenv.git dest=/home/vagrant/.pyenv/plugins/pyenv-virtualenv
